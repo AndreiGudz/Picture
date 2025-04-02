@@ -14,6 +14,7 @@ namespace PictureTestApp
 
 
 
+
         private async void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
