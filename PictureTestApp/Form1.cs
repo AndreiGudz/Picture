@@ -12,9 +12,6 @@ namespace PictureTestApp
             InitializeComponent();
         }
 
-
-
-
         private async void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -24,7 +21,7 @@ namespace PictureTestApp
                 pictureBox.Image = null;
                 _bitmaps.Clear();
                 var bitmap = new Bitmap(openFileDialog.FileName);
-                await Task.Run(() => { RunPocessint(bitmap); });
+                await Task.Run(() => { RunProcessing(bitmap); });
                 pictureBox.Image = _bitmaps[trackBar.Value];
                 this.menuStrip.Enabled = this.trackBar.Enabled = true;
                 sw.Stop();
@@ -49,35 +46,45 @@ namespace PictureTestApp
             return pixels;
         }
 
-        private void RunPocessint(Bitmap bitmap)
+        private void RunProcessing(Bitmap bitmap)
         {
             var pixels = GetPixels(bitmap);
             var pixelsInStep = (bitmap.Width * bitmap.Height) / 100;
             var currentPixelList = new List<Pixel>(pixels.Count - pixelsInStep);
 
-            _bitmaps.Add(new Bitmap(bitmap.Width, bitmap.Height));
+            _bitmaps.Add(new Bitmap(bitmap.Width, bitmap.Height));  // пустой битмап
             for (int i = 1; i < trackBar.Maximum; i++)
             {
-                for (int j = 0; j < pixelsInStep; j++)
-                {
-                    var index = _random.Next(pixels.Count);
-                    currentPixelList.Add(pixels[index]);
-                    pixels.RemoveAt(index);
-                }
-                var currentBitmap = new Bitmap(bitmap.Width, bitmap.Height);
-
-                foreach (var pixel in currentPixelList)
-                    currentBitmap.SetPixel(pixel.Point.X, pixel.Point.Y, pixel.Color);
-
+                CurrentPixelListUpdate(pixels, pixelsInStep, currentPixelList);
+                Bitmap currentBitmap = GetNewCurrentBitmap(bitmap, currentPixelList);
                 _bitmaps.Add(currentBitmap);
 
                 this.Invoke(new Action(() =>
                 {
-                    this.Text = $"{i}%"; 
+                    this.Text = $"{i}%";
                 }));
             }
+            _bitmaps.Add(bitmap); // картинка целиком
+        }
 
-            _bitmaps.Add(bitmap);
+        private static Bitmap GetNewCurrentBitmap(Bitmap bitmap, List<Pixel> currentPixelList)
+        {
+            var currentBitmap = new Bitmap(bitmap.Width, bitmap.Height);
+            foreach (var pixel in currentPixelList)
+                currentBitmap.SetPixel(pixel.Point.X, pixel.Point.Y, pixel.Color);
+            return currentBitmap;
+        }
+
+        private void CurrentPixelListUpdate(List<Pixel> pixels, int pixelsInStep, List<Pixel> currentPixelList)
+        {
+            var count = pixels.Count;
+            for (int j = 0; j < pixelsInStep; j++)
+            {
+                var index = _random.Next(pixels.Count);
+                currentPixelList.Add(pixels[index]);
+                pixels.RemoveAt(index);
+                --count;
+            }
         }
 
         private void trackBar_Scroll(object sender, EventArgs e)
