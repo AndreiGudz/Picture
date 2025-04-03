@@ -33,7 +33,7 @@
             trackBar = new TrackBar();
             menuStrip = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
-            openToolStripMenuItem = new ToolStripMenuItem();
+            OpenToolStripMenuItem = new ToolStripMenuItem();
             openFileDialog = new OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
@@ -96,17 +96,17 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { OpenToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(62, 34);
             fileToolStripMenuItem.Text = "File";
             // 
-            // openToolStripMenuItem
+            // OpenToolStripMenuItem
             // 
-            openToolStripMenuItem.Name = "openToolStripMenuItem";
-            openToolStripMenuItem.Size = new Size(182, 40);
-            openToolStripMenuItem.Text = "Open";
-            openToolStripMenuItem.Click += openToolStripMenuItem_Click;
+            OpenToolStripMenuItem.Name = "OpenToolStripMenuItem";
+            OpenToolStripMenuItem.Size = new Size(315, 40);
+            OpenToolStripMenuItem.Text = "Open";
+            OpenToolStripMenuItem.Click += OpenToolStripMenuItem_Click;
             // 
             // openFileDialog
             // 
@@ -141,7 +141,7 @@
         private TrackBar trackBar;
         private MenuStrip menuStrip;
         private ToolStripMenuItem fileToolStripMenuItem;
-        private ToolStripMenuItem openToolStripMenuItem;
+        private ToolStripMenuItem OpenToolStripMenuItem;
         private OpenFileDialog openFileDialog;
         private PictureBox pictureBox;
     }
